@@ -1,3 +1,5 @@
+use std::io;
+
 // Board consistes of 3x3 grid
 struct Board {
     spaces: Vec<Vec<i32>>,
@@ -8,6 +10,7 @@ struct Player {
     num: i32,
 }
 
+// methods for Board
 impl Board {
     // creates new board
     fn new_board() -> Board {
@@ -45,6 +48,11 @@ impl Board {
             _ => self.spaces[y][x] = 3,
         };
     }
+
+    // check if there is a winner
+    fn has_winner(& self) -> bool {
+        false
+    }
 }
 
 fn main() {
@@ -53,5 +61,17 @@ fn main() {
     let p2 = Player { num: 2 };
     board.set_space(1, 1, &p1);
     board.set_space(0, 0, &p2);
-    board.print_board();
+    let mut curr_player = &p1;
+
+    while !board.has_winner() {
+        board.print_board();
+        println!("Current player: {}", curr_player.num);
+
+        let mut input = String::new();
+        println!("Input: ");
+        io::stdin().read_line(&mut input);
+        print!("{}", input);
+
+        curr_player = if curr_player.num == p1.num { &p2 } else { &p1 };
+    }
 }
