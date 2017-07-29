@@ -14,6 +14,12 @@ impl Rect {
     fn area(&self) -> u32 {
         self.len * self.wid
     }
+
+    // return boolean for whether this instance can complety
+    // contain the given parameter instance
+    fn can_hold(&self, other: &Rect) -> bool {
+        self.len > other.len && self.wid > other.wid
+    }
 }
 
 // calculate area for rectangle represented with tuple
@@ -33,6 +39,10 @@ fn main() {
     println!("debug rect: {:#?}", &rect);
 
     println!("struct method area: {}", rect.area());
+
+    let rect2 = Rect { len: 1, wid: 3 };
+    println!("rect can hold rect2: {}", rect.can_hold(&rect2));
+    println!("rect2 can hold rect: {}", rect2.can_hold(&rect));
 
     let rect = (3, 6);
     println!("tuple area: {}", tuple_area(&rect));
