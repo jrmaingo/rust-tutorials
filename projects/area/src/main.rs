@@ -1,3 +1,4 @@
+#[derive(Debug)]
 struct Rect {
     len: u32,
     wid: u32
@@ -21,6 +22,8 @@ fn param_area(len: u32, wid: u32) -> u32 {
 fn main() {
     let rect = Rect { len: 5, wid: 7 };
     println!("struct area: {}", area(&rect));
+    println!("debug rect: {:?}", &rect);
+    println!("debug rect: {:#?}", &rect);
 
     let rect = (3, 6);
     println!("tuple area: {}", tuple_area(&rect));
