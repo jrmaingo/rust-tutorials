@@ -20,6 +20,11 @@ impl Rect {
     fn can_hold(&self, other: &Rect) -> bool {
         self.len > other.len && self.wid > other.wid
     }
+
+    // constructor for square (associated function)
+    fn square(size: u32) -> Rect {
+        Rect { len: size, wid: size }
+    }
 }
 
 // calculate area for rectangle represented with tuple
@@ -40,7 +45,7 @@ fn main() {
 
     println!("struct method area: {}", rect.area());
 
-    let rect2 = Rect { len: 1, wid: 3 };
+    let rect2 = Rect::square(3);
     println!("rect can hold rect2: {}", rect.can_hold(&rect2));
     println!("rect2 can hold rect: {}", rect2.can_hold(&rect));
 
