@@ -1,0 +1,6 @@
+[package]
+name = "palin"
+version = "0.1.0"
+authors = ["Julian Maingot <julianmaingot@gmail.com>"]
+
+[dependencies]
