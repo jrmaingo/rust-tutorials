@@ -5,4 +5,6 @@ authors = ["Julian Maingot <julianmaingot@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-ring = "0.14.6"
+sodiumoxide = "0.2.1"
+serde = "1.0.89"
+serde_json = "1.0.39"
