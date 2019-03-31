@@ -14,11 +14,9 @@ struct SsbSecret {
     feed_id: String,
 }
 
-fn main() {
-    let mut ssb_secret: SsbSecret;
-
+fn get_json_secret(file_path: &str) -> Value {
     // extract object for file, parse as JSON
-    let file = File::open("/Users/julian/.ssb/secret")
+    let file = File::open(file_path)
         .expect("Unable to read secret file");
     let json_str = BufReader::new(file)
         .lines()
@@ -34,18 +32,36 @@ fn main() {
             acc.push_str(&line);
             acc
         });
-    let json: Value = serde_json::from_str(&json_str)
-        .expect("failed to parse secret file");
+    serde_json::from_str(&json_str)
+        .expect("failed to parse secret file")
+}
 
-    // parse secret key from file
-    let secret_key_enc_bytes = json["private"].as_str()
-        .expect("secret key is not a string")
-        .splitn(2, ".").next().unwrap()
-        .as_bytes();
-    let secret_key_dec_bytes = decode(secret_key_enc_bytes)
-        .expect("failed to decode secret key");
-    ssb_secret.secret_key = SecretKey::from_slice(&secret_key_dec_bytes)
-        .expect("failed to create secret key from binary data");
+impl SsbSecret {
+    fn new(file_path: &str) -> SsbSecret {
+        let json: Value = get_json_secret(file_path);
+        let ssb_secret: SsbSecret;
 
-    // TODO: read public key and test!
+        // parse secret key from file
+        let secret_key_enc_bytes = json["private"].as_str()
+            .expect("secret key is not a string")
+            .splitn(2, ".").next().unwrap()
+            .as_bytes();
+        let secret_key_dec_bytes = decode(secret_key_enc_bytes)
+            .expect("failed to decode secret key");
+        let secret_key = SecretKey::from_slice(&secret_key_dec_bytes)
+            .expect("failed to create secret key from binary data");
+
+        // TODO: read public key and test!
+
+        SsbSecret {
+            curve: String::from(json["curve"].as_str().unwrap()),
+            secret_key: secret_key,
+            // TODO: public_key
+            // TODO: feed_id
+        }
+    }
+}
+
+fn main() {
+    let mut ssb_secret = SsbSecret::new("/Users/julian/.ssb/secret");
 }
