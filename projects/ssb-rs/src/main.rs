@@ -7,6 +7,8 @@ use std::fs::File;
 use std::io::BufReader;
 use std::io::prelude::*;
 
+const SECRET_PATH: &str = "/Users/julian/.ssb/secret";
+
 #[derive(Debug)]
 struct SsbSecret {
     curve: String,
@@ -70,6 +72,6 @@ impl SsbSecret {
 }
 
 fn main() {
-    let mut ssb_secret = SsbSecret::new("/Users/julian/.ssb/secret");
+    let mut ssb_secret = SsbSecret::new(SECRET_PATH);
     println!("{:?}", ssb_secret);
 }
